@@ -1,3 +1,3 @@
 Friend needed help for an end-of-year Java project that involved programming chess. Now, since she had 0 knowledge of chess, I helped her understand the rules, logic, and nuances of chess and how to put that into the code, and helped with writing up test cases and testing files that would adequately cover all the cases.
 
-Using Processing and Java would inspire me to code up my own project for a Card Game
+Using Processing and Java would inspire me to code up my own project for a Card Game ()
