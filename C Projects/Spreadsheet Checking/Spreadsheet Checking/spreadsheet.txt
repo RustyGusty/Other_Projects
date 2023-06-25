@@ -1,0 +1,242 @@
+Dual Lasers	Flak I	Halberd Beam	Heavy Laser I
+Glaive Beam			
+Flak I	Burst Laser II	Halberd Beam	
+Flak I	Flak I	Flak I	
+Flak I	Flak I	Burst Laser II	
+Flak I	Hull Laser I	Pike Beam	Pike Beam I
+Flak I	Flak I	Halberd Beam	Heavy Laser I
+Flak I	Flak I	Flak I	Burst Laser I
+Adv. Flak	Flak I	Heavy Laser I	Halberd Beam
+Flak I	Burst Laser II	Heavy Laser I	Heavy Laser II
+Burst Laser II	Burst Laser II	Heavy Laser I	Halberd Beam
+Flak I	Flak I	Heavy Laser II	
+Dual Lasers	Heavy Laser I	Hull Laser I	Hull Laser I
+Burst Laser I	Hull Laser I	Pike Beam	
+Hull Laser I	Heavy Crystal I	Small Bomb	
+Flak I	Flak I	Flak I	Hull Beam
+Halberd Beam	Flak I	Flak I	
+Burst Laser I	Burst Laser II	Heavy Laser II	
+Flak I	Halberd Beam	Charge Laser II	
+Burst Laser II	Burst Laser II	Hull Laser I	Hull Laser I
+Flak I	Flak I	Heavy Laser I	
+Glaive Beam			
+Flak I	Flak I	Burst Laser II	Burst Laser II
+Dual Lasers	Chain Ion		
+Flak II	Flak I	Heavy Laser II	Halberd Beam
+Burst Laser I	Burst Laser I	Halberd Beam	Halberd Beam
+Adv. Flak	Flak I	Heavy Laser I	Halberd Beam
+Dual Lasers	Burst Laser I	Hull Laser II	Heavy Laser I
+Heavy Laser I	Heavy Laser I	Artemis Missile	
+Halberd Beam	Charge Laser I	Heavy Laser I	
+Halberd Beam	Heavy Laser I	Chain Laser	Small Bomb
+Chain Laser	Flak I	Heavy Laser I	Small Bomb
+Flak I	Flak I	Heavy Laser II	Dual Lasers
+Flak I	Burst Laser II	Burst Laser II	
+Flak I	Pike Beam	Glaive Beam	
+Burst Laser II	Halberd Beam	Halberd Beam	Flak I
+Chain Laser	Hull Laser I	Halberd Beam	Small Bomb
+Burst Laser II	Burst Laser II	Flak I	Flak I
+Flak I	Flak I	Glaive Beam	
+Flak I	Dual Lasers	Heavy Laser I	Halberd Beam
+Flak I	Heavy Laser II	Halberd Beam	
+Burst Ion I	Burst Ion I	Pike Beam	Hull Laser I
+Flak I	Flak I	Burst Laser II	Burst Laser I
+Flak I	Flak I	Burst Laser II	Hull Beam
+Dual Lasers	Halberd Beam	Heavy Laser I	Hull Laser II
+Halberd Beam	Burst Laser II	Flak II	
+Flak I	Flak I	Burst Laser II	Hull Beam
+Mini Beam	Flak I		
+Burst Laser II	Chain Laser	Halberd Beam	Flak II
+Flak I	Flak I	Hull Beam	
+Flak I	Flak I	Chain Laser	Heavy Crystal I
+Halberd Beam	Burst Laser II	Burst Laser I	Heavy Laser I
+Burst Laser II	Burst Laser II	Halberd Beam	
+Flak I	Hull Laser I	Hull Laser I	Halberd Beam
+Flak I	Flak I	Halberd Beam	
+Adv. Flak	Flak I	Flak I	Heavy Laser II
+Flak I	Burst Laser II	Hull Laser II	
+Halberd Beam	Flak I	Hull Laser II	
+Flak I	Flak I	Flak I	Dual Lasers
+Flak I	Flak I	Halberd Beam	
+Hull Laser I	Burst Laser II	Hull Beam	Basic Laser
+Hull Laser I	Heavy Laser I	Charge Laser I	Halberd Beam
+Burst Laser II	Pike Beam	Burst Laser I	Heavy Laser I
+Flak I	Flak I	Burst Laser II	Burst Laser I
+Flak I	Burst Laser II	Heavy Laser I	Halberd Beam
+Glaive Bean			
+Flak I	Flak I	Halberd Beam	
+Flak I	Burst Laser II	Halberd Beam	Heavy Laser I
+Charge Laser I			
+Flak I	Hull Laser I	Halberd Beam	
+Flak I	Flak I	Dual Lasers	
+Flak I	Flak I	Flak I	Flak I
+Burst Laser II	Hull Laser I	Crystal Heavy 1	Hull Beam
+Flak I	Charge Laser I	Artemis Missile	Heal Bomb
+Flak I	Flak I	Heavy Laser II	
+Basic Laser	Bomb		
+Flak I	Dual Lasers	Halberd Beam	
+Burst Laser II	Charge Laser II	Halberd Beam	
+Flak I	Hull Laser II	Pike beam	
+Dual Lasers	Flak I	Flak I	Heavy Laser II
+Hull Laser I	Halberd Beam	Burst Laser I	Ion Blast I
+Flak I	Flak I	Flak I	
+Flak I	Flak I	Halberd Beam	Heavy Laser I
+Burst Laser I	Burst Laser I	Charge Laser I	Heavy Laser I
+Burst Laser II	Burst Laser II	Dual Lasers	Heavy Laser II
+Burst Laser I	Heavy Laser II	Halberd Beam	Small Bomb
+Flak I	Burst Laser II	Heavy Laser I	Heavy Laser II
+Flak I	Heavy Laser I	Halberd Beam	
+Burst Laser II	Chain Laser	Small Bomb	
+Flak I	Halberd Beam	Pike Beam	
+Flak I	Burst Laser I	Heavy Laser I	Dual Lasers
+Flak I	Heavy Laser I	Charge Laser I	Halberd Beam
+Burst Laser I	Heavy Laser I	Hull Beam	Hull Laser II
+Hull Laser II	Burst Laser I		
+Flak I	Flak I	Halberd Beam	
+Flak I	Burst Laser II	Halberd Beam	Heavy Laser I
+Flak I	Burst Laser II	Heavy Laser I	Burst Laser I
+Dual Lasers	Hull Laser I	Hull Laser II	Pike Beam
+Flak I	Burst Laser I	Halberd Beam	
+Flak I	Burst Laser II	Heavy Laser I	Halberd Beam
+Burst Laser I	Hull Laser I	Halberd Beam	
+Glaive Beam			
+Flak I	Burst Laser II	Heavy Laser II	
+Flak I	Flak I	Halberd Beam	
+Hull Laser II	Heavy Crystal I	Fire Beam	
+Flak I	Flak I	Dual Lasers	Heavy Laser II
+Burst Laser II	Burst Laser II	Mini Beam	
+Flak I	Heavy Laser II	Halberd Beam	
+Adv. Flak	Heavy Laser I	Burst Laser I	Halberd Beam
+Flak I	Flak I	Burst Laser II	Basic Laser
+Dual Lasers	Mini Beam	Flak I	
+Flak I	Chain Laser	Glaive Beam	
+Glaive Beam			
+Flak I	Hull Laser I	Basic Laser	Halberd Beam
+Flak I	Burst Laser II	Heavy Laser I	Heavy Laser I
+Flak I	Heavy Laser I	Heavy Laser II	Adv. Flak
+Flak I	Burst Laser II	Halberd Beam	
+Charge Laser I	Heavy Laser I	Heavy Laser I	
+Flak I	Flak I	Glaive Beam	
+Flak I	Mini Beam	Dual Lasers	
+Dual Lasers	Ion Stun 		
+Flak I	Burst Laser II	Burst Laser I	Halberd Beam
+Flak II	Heavy Laser II	Heavy Laser I	
+Flak I	Flak I	Heavy Laser I	Halberd Beam
+Hull Laser I	Hull Beam	Heavy Laser I	
+Flak I	Hull Laser I	Halberd Beam	
+Flak I	Flak I	Flak I	Burst Laser II
+Flak I	Heavy Laser I	Heavy Laser I	Charge Laser I
+Glaive Beam	Charge Laser II	Heavy Laser I	
+Burst Laser II	Heavy Laser II	Chain Laser 	
+Burst Laser II	Flak I	Flak I	Hull Beam
+Flak I	Heavy Laser I	Dual Lasers	Halberd Beam
+Burst Ion II	Burst Laser I		
+Flak I	Heavy Crystal I	Halberd Beam	Chain Laser
+Burst Laser II	Burst Laser II	Burst Laser I	Heavy Laser I
+Flak I	Burst Laser I	Halberd Beam	
+Dual Lasers	Heavy Laser II	Heavy Laser II	
+Dual Lasers	Burst Laser II	Heavy Laser II	Heavy Laser I
+Adv. Flak	Flak I	Flak I	Heavy Laser I
+Halberd Beam	Burst Laser I	Hull Laser I	
+Flak I	Flak I	Heavy Laser II	Heavy Crystal I
+Hull Laser II	Burst Laser I	Hull Beam	
+Dual Lasers	Mini Beam	Heavy Laser II	
+Burst Laser II	Hull Laser I	Hull Laser I	Hull Beam
+Hull Laser II	Heavy Laser I	Pike Beam	
+			
+Halberd Beam	Burst Laser I	Charge Laser I	
+Dual Lasers	Halberd Beam	Halberd Beam	
+Flak I	Flak I	Pike Beam	Hull Beam
+Charge Laser II	Halberd Beam	Pike Beam	
+Charge Laser II			
+Halberd Beam	Halberd Beam		
+Flak I	Flak I	Halberd Beam	
+Burst Laser II	Charge Laser I	Halberd Beam	
+Adv. Flak	Flak I	Flak I	Heavy Laser I
+Flak I	Flak I	Flak I	Flak I
+Burst Laser II	Pike Beam		
+Halberd Beam	Burst Laser II	Dual Lasers	Heavy Laser I
+Flak I	Heavy Laser II	Halberd Beam	
+Flak I	Halberd Beam	Burst Laser I	
+Heavy Laser II	Charge Laser I	Heavy Laser I	
+Halberd Beam	Dual Lasers	Heavy Laser I	Heavy Laser I
+Halberd Beam	Hull Laser I	Burst Laser I	Heavy Laser I
+Halberd Beam	Flak I	Flak I	
+Burst Laser II			
+Flak I	Burst Laser II	Heavy Laser I	Dual Lasers
+Burst Laser II			
+Halberd Beam	Flak II	Burst Laser II	
+Burst Laser I	Chain Laser	Hull Laser I	Fire Beam
+Flak I	Burst Laser II	Dual Lasers	Halberd Beam
+Flak I	Flak I	Dual Lasers	Halberd Beam
+Glaive Beam	Burst Laser I		
+Basic Laser	Small Bomb		
+Burst Laser II	Hull Laser I	Halberd Beam	
+Flak I	Hull Laser II	Pike Beam	
+Burst Laser II	Hull Laser II	Pike Beam	
+			
+Flak I	Hull Laser II	Halberd Beam	
+Dual Lasers	Heavy Laser I	Ion Stun	
+Flak I	Hull Laser I	Heavy Laser I	Pike Beam
+Hull Laser I	Hull Laser I	Burst Laser II	Heavy Laser I
+Halberd Beam	Burst Laser II	Chain Laser	Ion Blast I
+Flak I	Burst Laser II	Halberd Beam	
+Burst Laser II	Hull Laser II	Hull Laser II	
+Burst Laser II	Heavy Laser I	Hull Laser I	Halberd Beam
+Flak I	Burst Laser II	Halberd Beam	Heavy Laser I
+Glaive Beam	Chain Laser		
+Pike Beam	Charge Laser I	Hull Laser II	
+Halberd Beam	Basic Laser	Basic Laser	Basic Laser
+Halberd Beam	Flak I	Flak I	Ion Stun
+Mini Beam	Hull Laser I	Charge Laser 1+	
+Hull Laser II	Hull Laser II	Dual Lasers	
+Halberd Beam	Chain Laser	Ion Blast I	Heavy Laser I
+Halberd Beam	Burst Laser II	Heavy Laser I	Hull Laser I
+Flak I	Heavy Laser II	Hull Laser II	
+Burst Laser I	Heavy Crystal I	Hull Laser II	Pike Beam
+Dual Lasers	Anti-Bio Beam	Heavy Laser I	Charge Laser I
+Burst Laser II	Flak I	Heavy Laser I	
+Flak I	Heavy Laser II	Hull Laser II	
+Burst Laser II	Dual Lasers	Heavy Laser II	
+Burst Laser II	Heavy Laser II	Dual Lasers	Burst Laser I
+Halberd Beam	Flak I	Heavy Laser I	
+Halberd Beam	Heavy Ion		
+Flak I	Heavy Crystal I	Hull Laser I	Hull Laser II
+Heavy Laser II	Burst Laser I	Pike Beam	
+Flak I	Hull Laser I	Halberd Beam	Small Bomb
+Flak I	Pike Beam	Flak I	Hull Laser I
+Adv. Flak	Flak I	Hull Laser I	Halberd Beam
+Heavy Crystal I	Chain Vulcan	Heavy Laser I	Pike Beam
+Glaive Beam	Flak I	Heavy Laser I	
+Pike Beam	Burst Laser I	Chain Laser	Ion Blast I
+Halberd Beam	Chain Laser		
+Halberd Beam	Dual Lasers	Hull Laser II	Ion Stun
+Dual Lasers	Flak I	Hull Beam	Heavy Laser I
+Flak I	Flak I	Flak I	Flak I
+Flak I	Flak I	Heavy Laser II	
+Flak I	Burst Laser II	Charge Laser I	Hull Laser I
+Flak I	Flak I	Burst Laser II	Burst Laser II
+Halberd Beam	Hull Laser I	Heavy Laser II	
+Flak I	Halberd Beam	Burst Laser I	Heavy Laser I
+Flak I	Flak I	Flak I	Burst Laser II
+Flak I	Burst Laser II	Heavy Laser I	Halberd Beam
+Flak I	Burst Laser II	Heavy Laser II	Heavy Laser I
+Burst Laser II	Burst Laser II	Halberd Beam	Heavy Laser I
+Flak I	Charge Laser I	Chain Laser	
+Halberd Beam	Ion Blast I	Ion Blast I	Heavy Laser II
+Adv. Flak	Halberd Beam	Heavy Laser I	Heavy Laser II
+Flak I	Halberd Beam	Charge Laser I	
+Burst Laser II	Burst Laser I	Heavy Laser II	
+Flak I	Hull Laser I	Heavy Laser II	Heavy Laser I
+Glaive Beam	Heavy Laser I	Hull Missile	
+Flak I	Halberd Beam	Halberd Beam	
+Flak I	Burst Laser II	Burst Laser II	Pike Beam
+Hull Laser I	Charge Laser I	Hermes Missile	Small Bomb
+Flak I	Flak I	Halberd Beam	Heavy Laser I
+Adv. Flak	Halberd Beam	Halberd Beam	Heavy Laser I
+Hull Laser I	Pike Beam	Basic Laser	Heavy Laser I
+Flak I	Flak I	Flak I	Heavy Laser I
+Burst Laser I	Burst Laser I	Heavy Pierce I	Pike Beam
+Halberd Beam	Halberd Beam	Flak I	Flak I
+Ion Blast II	Fire Beam	Halberd Beam	
+Halberd Beam	Halberd Beam	Flak I	Hull Beam

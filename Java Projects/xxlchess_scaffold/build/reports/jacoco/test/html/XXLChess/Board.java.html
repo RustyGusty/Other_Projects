@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">xxlchess_scaffold</a> &gt; <a href="index.source.html" class="el_package">XXLChess</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">package XXLChess;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Set;
+import java.util.HashSet;
+
+import XXLChess.Piece.*;
+
+/**
+ * Deals with anything relating to the board (initializing the board, 
+ * getting pieces from the board, moving pieces on the board, checking for checks, etc.)
+ */
+public class Board {
+
+
+    public final Piece[][] board; // a 2D array of pieces. Empty spaces are null 
+    public final Set&lt;Location&gt; whiteAttackedSet; // A Set of all squares attacked by white
+    public final Set&lt;Location&gt; blackAttackedSet; // A Set of all squares attacked by black
+    public final Set&lt;Piece&gt; pieceList; // A Set of all pieces in play
+
+    private King whiteKing; // The white king, initialized in initializeBoard 
+    private King blackKing; // The black king 
+    
+    /**
+     * Constructor for building a board based on the layout found in levelFilename
+     * @param width size of the square board (squares only)
+     * @param levelFilename String with the filename of the properly formatted layout (see initializeBoard)
+     * @param whiteMovesFirst true if white moves first (like normal), false otherwise
+     */
+<span class="fc" id="L34">    public Board(int width, String levelFilename, boolean whiteMovesFirst){</span>
+<span class="fc" id="L35">        board = new Piece[width][width];</span>
+<span class="fc" id="L36">        whiteAttackedSet = new HashSet&lt;Location&gt;();</span>
+<span class="fc" id="L37">        blackAttackedSet = new HashSet&lt;Location&gt;();</span>
+<span class="fc" id="L38">        pieceList = new HashSet&lt;Piece&gt;();</span>
+<span class="fc" id="L39">        initializeBoard(levelFilename);</span>
+<span class="fc" id="L40">        initializeMoves(whiteMovesFirst);</span>
+<span class="fc" id="L41">    }</span>
+    
+    /**
+     * Constructor for building an empty board
+     * @param width size of the square board (squares only)
+     */
+<span class="fc" id="L47">    public Board(int width) {</span>
+<span class="fc" id="L48">        board = new Piece[width][width];</span>
+<span class="fc" id="L49">        whiteAttackedSet = new HashSet&lt;Location&gt;();</span>
+<span class="fc" id="L50">        blackAttackedSet = new HashSet&lt;Location&gt;();</span>
+<span class="fc" id="L51">        pieceList = new HashSet&lt;Piece&gt;();</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Given a Location, returns the piece on the board associated with that Location (null if empty)
+     * @param loc Location of the piece to be returned
+     * @return the Piece on that Location on the board, null if that Location is empty
+     */
+    public Piece getPiece(Location loc) {
+<span class="fc" id="L60">        return board[loc.y][loc.x];</span>
+    }
+    
+    /**
+     * Given a row and col, returns the piece on the board associated with that row and col (null if empty)
+     * Note that this is identical to getPieceFromLocation but with indicies instead
+     * @param row int representing the row number
+     * @param col int representing the column number
+     * @return the Piece on that row and col combo on the board, null if that Location is empty
+     */
+    public Piece getPiece(int row, int col){
+<span class="fc" id="L71">        return board[row][col];</span>
+    }
+
+    /**
+     * Places newPiece onto the Location specified by targetLocation, returning the overwritten Piece
+     * (null if no Piece overwritten)
+     * @param newPiece Piece to be placed on the board
+     * @param targetLocation Location for the Piece to be placed in
+     * @return The Piece that was in targetLocation but was replaced by setPiece
+     */
+    public Piece setPiece(Piece newPiece, Location targetLocation){
+<span class="fc" id="L82">        Piece oldPiece = getPiece(targetLocation);</span>
+<span class="fc" id="L83">        board[targetLocation.y][targetLocation.x] = newPiece;</span>
+<span class="fc" id="L84">        return oldPiece;</span>
+    }
+
+    /**
+     * If removedPiece is non-null, removes that piece from the game and returns
+     * whether or not the removal was a success
+     * @param removedPiece Piece to be removed from the game
+     * @return {@code removedPiece != null}, or whether a piece was actually removed
+     */
+    public boolean removePiece(Piece removedPiece) {
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if(removedPiece == null)</span>
+<span class="nc" id="L95">            return false;</span>
+<span class="fc" id="L96">        pieceList.remove(removedPiece);</span>
+<span class="fc" id="L97">        setPiece(null, removedPiece.location);</span>
+<span class="fc" id="L98">        return true;</span>
+    }
+
+    /**
+     * Given a filename level, preps the board accordingly, initializing all pieces on it.
+     * File must be formatted with up to BOARD_WIDTH characters before a \n or \r character
+     * is found, and must also only contain valid chess characters pbnckaeqg and uppercase
+     * variants, as well as ' ' for empty locations
+     * @param level the filename for a text file formatted properly
+     */
+    public void initializeBoard(String level) {
+<span class="fc" id="L109">        File file = new File(level);</span>
+        BufferedReader br;
+        try {
+<span class="fc" id="L112">            br = new BufferedReader(new FileReader(file));</span>
+            int ch; PieceIndex p; boolean isWhite; Location newLoc;
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">            for(int i = 0; i &lt; App.BOARD_WIDTH; i++){ </span>
+<span class="fc" id="L115">                ch = br.read();</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">                for(int j = 0; j &lt; App.BOARD_WIDTH; j++) {</span>
+<span class="fc bfc" id="L117" title="All 4 branches covered.">                    if(ch == '\n' || ch == -1) break;</span>
+<span class="fc bfc" id="L118" title="All 4 branches covered.">                    if(ch == ' ' || ch == '\r') {</span>
+<span class="fc" id="L119">                        ch = br.read();</span>
+<span class="fc" id="L120">                        continue;</span>
+                    }
+<span class="fc" id="L122">                    p = PieceIndex.letterToIndex((char) ch);</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">                    if(p == null) {</span>
+<span class="nc" id="L124">                        br.close();</span>
+<span class="nc" id="L125">                        throw new IOException();</span>
+                    }
+<span class="fc" id="L127">                    isWhite = Character.isLowerCase(ch);</span>
+<span class="fc" id="L128">                    newLoc = new Location(j, i);</span>
+<span class="fc" id="L129">                    addPieceFromPieceIndex(p, isWhite, newLoc);</span>
+<span class="fc" id="L130">                    ch = br.read();</span>
+                }
+<span class="fc bfc" id="L132" title="All 2 branches covered.">                if(ch == '\r') {</span>
+<span class="fc" id="L133">                    br.read();</span>
+                }
+<span class="fc bfc" id="L135" title="All 2 branches covered.">                else if(ch == -1){</span>
+<span class="fc" id="L136">                    br.close();</span>
+<span class="fc" id="L137">                    break;</span>
+                }
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">                else if(ch != '\n'){</span>
+<span class="nc" id="L140">                    br.close();</span>
+<span class="nc" id="L141">                    throw new IOException();</span>
+                }
+            }
+<span class="fc" id="L144">            br.close();</span>
+        }
+<span class="nc" id="L146">        catch(FileNotFoundException e){ </span>
+<span class="nc" id="L147">            System.out.println(level + &quot; not found.&quot;);</span>
+<span class="nc" id="L148">            System.exit(1);</span>
+        }
+<span class="nc" id="L150">        catch(IOException e) {</span>
+<span class="nc" id="L151">            System.out.println(&quot;The text file was not properly formatted&quot;);</span>
+<span class="nc" id="L152">            System.exit(1);</span>
+<span class="pc" id="L153">        }</span>
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Given a PieceIndex, adds the corresponding piece to the board, updating the
+     * whiteKing and blackKing fields accordingly, returning the newly added piece
+     * @param p PieceIndex of the piece to be added
+     * @param isWhite {@code true} if the piece is to be white's, {@code false} if the piece is black's
+     * @param newLoc the position of the new piece on the board
+     * @return the newly added piece
+     */
+    public Piece addPieceFromPieceIndex(PieceIndex p, boolean isWhite, Location newLoc) {
+
+<span class="pc bpc" id="L166" title="1 of 12 branches missed.">        switch(p){</span>
+            case PAWN:
+<span class="fc" id="L168">                return new Pawn(isWhite, newLoc, this).addPiece();</span>
+            case BISHOP:
+<span class="fc" id="L170">                return new Bishop(isWhite, newLoc, this).addPiece();</span>
+            case KNIGHT:
+<span class="fc" id="L172">                return new Knight(isWhite, newLoc, this).addPiece();</span>
+            case CAMEL:
+<span class="fc" id="L174">                return new Camel(isWhite, newLoc, this).addPiece();</span>
+            case ROOK:
+<span class="fc" id="L176">                return new Rook(isWhite, newLoc, this).addPiece();</span>
+            case GENERAL:
+<span class="fc" id="L178">                return new General(isWhite, newLoc, this).addPiece();</span>
+            case CHANCELLOR:
+<span class="fc" id="L180">                return new Chancellor(isWhite, newLoc, this).addPiece();</span>
+            case ARCHBISHOP:
+<span class="fc" id="L182">                return new Archbishop(isWhite, newLoc, this).addPiece();</span>
+            case AMAZON:
+<span class="fc" id="L184">                return new Amazon(isWhite, newLoc, this).addPiece();</span>
+            case KING:
+<span class="fc" id="L186">                King newKing = new King(isWhite, newLoc, this);</span>
+<span class="fc" id="L187">                newKing.addPiece();</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">                if(isWhite)</span>
+<span class="fc" id="L189">                    whiteKing = newKing;</span>
+                else 
+<span class="fc" id="L191">                    blackKing = newKing;</span>
+<span class="fc" id="L192">                return newKing;</span>
+            case QUEEN:
+<span class="fc" id="L194">                return new Queen(isWhite, newLoc, this).addPiece();</span>
+            default:
+<span class="nc" id="L196">                return null;</span>
+        }
+    }
+
+    /**
+     * Updates attackedSpaces set for the owner of the attacking piece, by adding
+     * all valid moves of the attackingPiece to it
+     * @param attackingPiece Piece that is threatening to move
+     */
+    public void addAttackedSpace(Piece attackingPiece){
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        Set&lt;Location&gt; attackedSet = attackingPiece.isWhite ? whiteAttackedSet : blackAttackedSet;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        for(Location loc : attackingPiece.validMoves){</span>
+<span class="fc" id="L208">            attackedSet.add(loc);</span>
+<span class="fc" id="L209">        }</span>
+<span class="fc" id="L210">    }</span>
+
+    /**
+     * Returns true if the attacking player specified by whiteAttacking has targetLocation as
+     * a valid move towards it
+     * @param whiteAttacking {@code true} if white is moving, {@code false} if black is moving
+     * @param targetLocation Location which is being checked
+     * @return {@code true} if targetLocation is a valid attack by the player, {@code false} otherwise
+     */
+    public boolean isAttackedBy(boolean whiteAttacking, Location targetLocation) {
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if(whiteAttacking) {</span>
+<span class="fc" id="L221">            return whiteAttackedSet.contains(targetLocation);</span>
+        } else {
+<span class="fc" id="L223">            return blackAttackedSet.contains(targetLocation);</span>
+        }
+    }
+
+    /**
+     * Used for temporary moves so that the attackedSpaces set is preserved but allowing checking newly-moved pieces
+     * Returns true if the player specified by isWhite is in check, false otherwise
+     * @param isWhite {@code true} if white is being checked, {@code false} if black is being checked
+     * @return {@code true} if isWhite is in check, {@code} false if isWhite is not in check
+     */
+    private boolean calculateCheck(boolean isWhite) {
+<span class="fc" id="L234">        King targetKing = blackKing;</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        if(isWhite)</span>
+<span class="fc" id="L236">            targetKing = whiteKing;</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        for(Piece piece : pieceList){</span>
+<span class="fc" id="L238">            Set&lt;Location&gt; attackedSpaces = piece.initializePieceMoves();</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">            if(attackedSpaces.contains(targetKing.location))</span>
+<span class="fc" id="L240">                return true;</span>
+<span class="fc" id="L241">        }</span>
+<span class="fc" id="L242">        return false;</span>
+    }
+
+    /**
+     * Returns true if the player specified by isWhite is in check, false otherwise
+     * @param isWhite {@code true} if white is being checked, {@code false} if black is being checked
+     * @return {@code true} if isWhite is in check, {@code false} if isWhite is not in check
+     */
+    public boolean isInCheck(boolean isWhite){
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        if(isWhite){</span>
+<span class="fc" id="L252">            return isAttackedBy(false, whiteKing.location);</span>
+        } else {
+<span class="fc" id="L254">            return isAttackedBy(true, blackKing.location);</span>
+        }
+    }
+
+    /**
+     * Simulates a move of movedPiece to targetLocation and checks if that would result in check.
+     * Resets the board to how it was originally and returns true if the king was in check, false otherwise
+     * @param movedPiece Piece that is being tested for movement
+     * @param targetLocation Location of the target destination of the move 
+     * @return {@code true} if the owner of movedPiece is in check after the move, {@code false} otherwise
+     */
+    public boolean moveAndInCheck(Piece movedPiece, Location targetLocation){
+<span class="fc" id="L266">        Location originalLocation = movedPiece.location;</span>
+<span class="fc" id="L267">        Piece capturedPiece = getPiece(targetLocation);</span>
+<span class="fc" id="L268">        movedPiece.makeMove(targetLocation);</span>
+<span class="fc" id="L269">        boolean res = calculateCheck(movedPiece.isWhite);</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        if((movedPiece instanceof Pawn)){</span>
+<span class="fc" id="L271">            Piece resPiece = getPiece(targetLocation);</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">            if(!(resPiece instanceof Pawn)) {</span>
+<span class="nc" id="L273">                pieceList.remove(resPiece);</span>
+<span class="nc" id="L274">                movedPiece.addPiece();</span>
+            } 
+<span class="fc" id="L276">            movedPiece.location = originalLocation;</span>
+<span class="fc" id="L277">            setPiece(movedPiece, originalLocation);</span>
+<span class="fc" id="L278">            setPiece(null, targetLocation);</span>
+
+<span class="fc" id="L280">        } else {</span>
+<span class="fc" id="L281">            movedPiece.makeMove(originalLocation);</span>
+        }
+<span class="fc bfc" id="L283" title="All 2 branches covered.">        if(capturedPiece != null){</span>
+<span class="fc" id="L284">            capturedPiece.addPiece();</span>
+        }
+        
+<span class="fc" id="L287">        return res;</span>
+    }
+
+    /**
+     * Initializes all possible moves of all the pieces given in pieceList, as well as the 
+     * attackedSpaces sets, returning true if this is checkmate
+     * @param isWhiteTurn {@code true} if white is about to move, {@code false} if black is about to move
+     * @return {@code true} if the mover has a valid move, {@code false} if the owner has no valid moves and is in checkmate (or stalemate)
+     */
+    /**
+     * Initializes all possible moves of all the pieces given in pieceList, as well as the 
+     * attackedSpaces sets, returning true if the moving player has no valid moves
+     * @param isWhiteTurn {@code true} if white is about to move, {@code false} if black is about to move
+     * @return {@code true} if the mover has a valid move, {@code false} if the owner has no valid moves and is in checkmate (or stalemate)
+     */
+    public boolean initializeMoves(boolean isWhiteTurn){
+<span class="fc" id="L303">        whiteAttackedSet.clear(); // Clear the whiteAttackedSet</span>
+<span class="fc" id="L304">        blackAttackedSet.clear(); // Clear the blackAttackedSet</span>
+
+<span class="fc" id="L306">        boolean moveAvailable = false; // Default state is that no move is available</span>
+        
+<span class="fc" id="L308">        King targetKing = getKing(isWhiteTurn); // Get the correct king, used for checking things later</span>
+        
+<span class="fc bfc" id="L310" title="All 2 branches covered.">        for(Piece piece : pieceList) {</span>
+<span class="fc bfc" id="L311" title="All 2 branches covered.">            if(!(piece instanceof King)) {</span>
+<span class="fc" id="L312">                piece.validMoves = piece.initializePieceMoves();</span>
+<span class="fc" id="L313">                addAttackedSpace(piece);</span>
+            }
+<span class="fc" id="L315">        }</span>
+        // Castling depends on the attacked spaces in a special way, so handle those last
+<span class="fc" id="L317">        whiteKing.validMoves = whiteKing.initializePieceMoves();</span>
+<span class="fc" id="L318">        addAttackedSpace(whiteKing);</span>
+<span class="fc" id="L319">        blackKing.validMoves = blackKing.initializePieceMoves();</span>
+<span class="fc" id="L320">        addAttackedSpace(blackKing);</span>
+        // Save this variable so we don't recall the function each time
+<span class="fc" id="L322">        boolean inCheck = isInCheck(isWhiteTurn);</span>
+        // Can't iterate over a changing set, so have to make temporary shallow copies
+<span class="fc" id="L324">        Set&lt;Piece&gt; tempList = new HashSet&lt;Piece&gt;(pieceList);</span>
+
+        // Iterate over every single possible move of the moving player
+        // To see if we need to make any corrections from our naive movelist
+<span class="fc bfc" id="L328" title="All 2 branches covered.">        for(Piece piece : tempList) {</span>
+            // We don't need to worry about the opponent player since they're not moving
+<span class="fc bfc" id="L330" title="All 2 branches covered.">            if(piece.isWhite == isWhiteTurn) {</span>
+                // If the king is already in check, or if that piece is attacked, or the piece is the king
+                // then we physically test all of those moves to see if one of them is actually invalid
+<span class="fc bfc" id="L333" title="All 8 branches covered.">                if (inCheck || piece == targetKing || isAttackedBy(!isWhiteTurn, piece.location)){</span>
+                    // Temporary set for iterating
+<span class="fc" id="L335">                    Set&lt;Location&gt; tempSet = new HashSet&lt;Location&gt;(piece.validMoves);</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">                    for(Location targetLocation : tempSet) {</span>
+                        // If after the move, the moving player is in check, then disqualify that move
+<span class="fc bfc" id="L338" title="All 2 branches covered.">                        if(moveAndInCheck(piece, targetLocation))</span>
+<span class="fc" id="L339">                            piece.validMoves.remove(targetLocation);</span>
+                        
+<span class="fc" id="L341">                    }</span>
+                }
+                // If we were able to find available, then set moveAvailable to be true
+<span class="fc bfc" id="L344" title="All 4 branches covered.">                if(!moveAvailable &amp;&amp; !piece.validMoves.isEmpty())</span>
+<span class="fc" id="L345">                    moveAvailable = true;</span>
+            }
+<span class="fc" id="L347">        }</span>
+<span class="fc" id="L348">        return moveAvailable;</span>
+    }
+
+
+    /**
+     * @param whiteTurn
+     * @return
+     */
+    public King getKing(boolean whiteTurn){
+<span class="fc bfc" id="L357" title="All 2 branches covered.">        return whiteTurn ? whiteKing : blackKing;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

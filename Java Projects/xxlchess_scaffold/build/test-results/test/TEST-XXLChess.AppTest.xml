@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="XXLChess.AppTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-05-18T18:47:58" hostname="GUSTAVO" time="1.804">
+  <properties/>
+  <testcase name="checksAndCheckmates()" classname="XXLChess.AppTest" time="0.119"/>
+  <testcase name="ai()" classname="XXLChess.AppTest" time="1.272"/>
+  <testcase name="setup()" classname="XXLChess.AppTest" time="0.179"/>
+  <testcase name="checkTimers()" classname="XXLChess.AppTest" time="0.21"/>
+  <testcase name="moveAndSpeedCalculations()" classname="XXLChess.AppTest" time="0.013"/>
+  <testcase name="mouseClicking()" classname="XXLChess.AppTest" time="0.005"/>
+  <testcase name="keyPressing()" classname="XXLChess.AppTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>King.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">xxlchess_scaffold</a> &gt; <a href="index.source.html" class="el_package">XXLChess.Piece</a> &gt; <span class="el_source">King.java</span></div><h1>King.java</h1><pre class="source lang-java linenums">package XXLChess.Piece;
+import XXLChess.Board;
+import XXLChess.Location;
+import XXLChess.Move;
+
+public class King extends Piece{
+
+    public King(boolean isWhite, Location location, Board board){
+<span class="fc" id="L9">        super(PieceIndex.KING, isWhite, location, KING_MOVES, 9999999, board);</span>
+<span class="fc" id="L10">    }</span>
+
+    //Same but check for castling rights
+    @Override
+    public boolean isNewValidMove(Location newLocation){
+<span class="fc bfc" id="L15" title="All 2 branches covered.">        if(super.isNewValidMove(newLocation))</span>
+<span class="fc" id="L16">            return true;</span>
+<span class="fc bfc" id="L17" title="All 4 branches covered.">        else if(newLocation.equals(new Location(location.x + 2, location.y)) &amp;&amp; canCastle(1))</span>
+<span class="fc" id="L18">            return true;</span>
+<span class="fc bfc" id="L19" title="All 4 branches covered.">        else if(newLocation.equals(new Location(location.x - 2, location.y)) &amp;&amp; canCastle(-1))</span>
+<span class="fc" id="L20">            return true;</span>
+<span class="fc" id="L21">        return false;</span>
+    }
+
+    /**
+     * Castling rules:
+     * King and Rook cannot have moved before,
+     * King cannot castle out of, through, or into check,
+     * No pieces obstructing movement of king and rook,
+     * Castling short moves king 2 squares right and rook to the left side
+     * 
+     * @param dir - 1 for short castling (right), -1 for long castling
+     * @return true iff can castle in the given direction
+     */
+    public boolean canCastle(int dir){
+<span class="fc bfc" id="L35" title="All 4 branches covered.">        if(hasMoved || board.isInCheck(isWhite)) return false;</span>
+<span class="fc" id="L36">        Location curLoc = new Location(location.x, location.y);</span>
+<span class="fc" id="L37">        Move castleMove = new Move(dir, 0, true);</span>
+<span class="fc" id="L38">        Piece curPiece = null;</span>
+        // Only check for attacked squares twice
+<span class="fc" id="L40">        int i = 0;</span>
+        // Shift over by dir until I hit a piece or the edge of the board
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        while(curLoc.stepForward(castleMove)){</span>
+<span class="fc bfc" id="L43" title="All 6 branches covered.">            if(i &lt; 2 &amp;&amp; board.isAttackedBy(!isWhite, curLoc)) return false;</span>
+<span class="fc" id="L44">            i++;</span>
+<span class="fc" id="L45">            curPiece = board.getPiece(curLoc);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            if(curPiece != null) {</span>
+                // If it's a non-rook piece, then castling not allowed
+<span class="fc bfc" id="L48" title="All 2 branches covered.">                if(!(curPiece instanceof Rook)){</span>
+<span class="fc" id="L49">                    return false;</span>
+                } else {
+                    // If the rook has already moved, then return false
+<span class="fc bfc" id="L52" title="All 2 branches covered.">                    if(curPiece.hasMoved) return false;</span>
+                    break;
+                }
+            }
+        }
+        // If no rook was found, then return false
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if(!(curPiece instanceof Rook)) return false;</span>
+        // If the rook was right next to the king, then check the next space over also
+<span class="fc bfc" id="L60" title="All 8 branches covered.">        if((dir == 1 &amp;&amp; curLoc.x &lt;= location.x + 1) || (dir == -1 &amp;&amp; curLoc.x &gt;= location.x - 1)){</span>
+<span class="fc" id="L61">            curLoc.stepForward(castleMove);</span>
+<span class="pc bpc" id="L62" title="1 of 6 branches missed.">            if(board.isAttackedBy(!isWhite, curLoc) || board.getPiece(curLoc) != null) return false;</span>
+        }
+<span class="fc" id="L64">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

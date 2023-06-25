@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="XXLChess.ChessTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-05-18T18:48:00" hostname="GUSTAVO" time="0.114">
+  <properties/>
+  <testcase name="testPieceMovement()" classname="XXLChess.ChessTest" time="0.068"/>
+  <testcase name="checkmateAndStalemate()" classname="XXLChess.ChessTest" time="0.002"/>
+  <testcase name="castle()" classname="XXLChess.ChessTest" time="0.022"/>
+  <testcase name="blackPawnTests()" classname="XXLChess.ChessTest" time="0.002"/>
+  <testcase name="whitePawnTests()" classname="XXLChess.ChessTest" time="0.002"/>
+  <testcase name="pin()" classname="XXLChess.ChessTest" time="0.005"/>
+  <testcase name="check()" classname="XXLChess.ChessTest" time="0.005"/>
+  <testcase name="buildStandardBoard()" classname="XXLChess.ChessTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

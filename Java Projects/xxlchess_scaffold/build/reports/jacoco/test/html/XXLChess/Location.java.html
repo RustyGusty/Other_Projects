@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Location.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">xxlchess_scaffold</a> &gt; <a href="index.source.html" class="el_package">XXLChess</a> &gt; <span class="el_source">Location.java</span></div><h1>Location.java</h1><pre class="source lang-java linenums">package XXLChess;
+
+/**
+ * Represents a square on the board. It's pretty much just a 2-int array, but this aids in readability
+ */
+public class Location {
+    public int x;
+    public int y;
+
+    /**
+     * Base constructor for a {0, 0} Location
+     */
+<span class="fc" id="L13">    public Location(){</span>
+<span class="fc" id="L14">        this.x = 0;</span>
+<span class="fc" id="L15">        this.y = 0;</span>
+<span class="fc" id="L16">    }</span>
+
+    /**
+     * Constructor for an {x, y} Location
+     * @param x int for the x-coord
+     * @param y int for the y-coord
+     */
+<span class="fc" id="L23">    public Location(int x, int y){</span>
+<span class="fc" id="L24">        this.x = x;</span>
+<span class="fc" id="L25">        this.y = y;</span>
+<span class="fc" id="L26">    }</span>
+
+<span class="fc" id="L28">    public Location(int[] locAsArray) {</span>
+<span class="fc" id="L29">        this.x = locAsArray[0];</span>
+<span class="fc" id="L30">        this.y = locAsArray[1];</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Returns true if this is a valid location within the board bounds, false otherwise
+     * @return {@code true} if this is a valid location within the board bounds, {@code false} otherwise
+     */
+    public boolean isValid() {
+<span class="fc bfc" id="L38" title="All 8 branches covered.">        return this.x &gt;= 0 &amp;&amp; this.x &lt; App.BOARD_WIDTH &amp;&amp; this.y &gt;= 0 &amp;&amp; this.y &lt; App.BOARD_WIDTH;</span>
+    }
+
+    /**
+     * Starting at this Location, returns a new Location after moving in the direction of move
+     * for multiplier times
+     * @param move Move object to represent the direction of movement
+     * @param multiplier number of times the move is done
+     * @return a new Location object of the final square after moving
+     */
+    public Location getLocationFromMove(Move move, int multiplier){
+<span class="fc" id="L49">        Location res = new Location();</span>
+<span class="fc" id="L50">        res.x = this.x + move.x * multiplier;</span>
+<span class="fc" id="L51">        res.y = this.y + move.y * multiplier;</span>
+<span class="fc" id="L52">        return res;</span>
+    }
+
+    /**
+     * Changes this Location to have its coordinates moved forward in the direction of move once,
+     * returning its validity as a boolean
+     * @param move Move object specifying the direction of movement
+     * @return {@code true} if the resulting square is valid, {@code false} otherwise
+     */
+    public boolean stepForward(Move move) {
+<span class="fc" id="L62">        this.x += move.x;</span>
+<span class="fc" id="L63">        this.y += move.y;</span>
+<span class="fc" id="L64">        return this.isValid();</span>
+    }
+
+    @Override
+    public int hashCode(){
+<span class="fc" id="L69">        return this.x * App.BOARD_WIDTH + this.y;</span>
+    }
+
+    @Override
+    public boolean equals(Object other) {
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if(other == this) {</span>
+<span class="nc" id="L75">            return true;</span>
+<span class="pc bpc" id="L76" title="2 of 4 branches missed.">        } else if (other == null || this.getClass() != other.getClass()){</span>
+<span class="nc" id="L77">            return false;</span>
+        } else {
+<span class="fc" id="L79">            Location loc = (Location) other;</span>
+<span class="fc bfc" id="L80" title="All 4 branches covered.">            return this.x == loc.x &amp;&amp; this.y == loc.y;</span>
+        }
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L86">        return &quot;(&quot; + x + &quot;, &quot; + y + &quot;)&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

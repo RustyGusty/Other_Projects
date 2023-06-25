@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Move.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">xxlchess_scaffold</a> &gt; <a href="index.source.html" class="el_package">XXLChess</a> &gt; <span class="el_source">Move.java</span></div><h1>Move.java</h1><pre class="source lang-java linenums">package XXLChess;
+
+/**
+ * Represents a direction vector of a possible move. If continueFlag == false, then only the
+ * specified distance is allowed, but if continueFlag == true, then all positive scalar multiples
+ * are allowed.
+ */
+public class Move {
+    
+    public final int x; // x-direction of movement
+    public final int y; // y-direction of movement
+    public final boolean continueFlag; //true if continuous movement, false if point movement
+
+    /**
+     * Initializes a new Move with the given parameters
+     * @param x - x-direction of movement
+     * @param y - y-direction of movement
+     * @param continueFlag - true if continuous movement, false if point movement
+     */
+<span class="fc" id="L20">    public Move(int x, int y, boolean continueFlag){</span>
+<span class="fc" id="L21">        this.x = x;</span>
+<span class="fc" id="L22">        this.y = y;</span>
+<span class="fc" id="L23">        this.continueFlag = continueFlag;</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * When used on a move representing a distance vector, returns whether or not that
+     * distance vector is a positive scalar multiple of candidateMove for continuous movement
+     * 
+     * @param candidateMove - Move variable with the x and y directions of movement
+     * (continueFlag assumed to be true)
+     * @return - true iff this (the distance vector) is a positive scalar multiple of candidateMove
+     */
+    public boolean isScalarMultiple(Move candidateMove) {
+        // If only y-direction movement, then ignore x and just check the sign of y
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if(candidateMove.x == 0){ </span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">            return candidateMove.y * this.y &gt; 0;</span>
+        } 
+        // If only x-direction movement, then ignore y and just check the sign of x
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        else if (candidateMove.y == 0){</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">            return candidateMove.x * this.x &gt; 0;</span>
+        }
+        // If bi-directional movement, check that the ratios are equivalent (sign included)
+        else {
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            return this.x / (double) candidateMove.x == this.y / (double) candidateMove.y;</span>
+        }
+    }
+
+    /**
+     * For aid in initialization, converts a 2D array arr into corresponding move values
+     * all with the same continue flag
+     * @param arr a 2D int[i][2] array, where arr[i]={x,y} is the 2-int pair
+     * representing the direction of movement
+     * @param continueFlag {@code true} if positive scalar multiples are allowed, {@code false}
+     * if only this specified distance is allowed
+     * @return a Move[] array with all the moves specified in arr
+     */
+    public static Move[] intArrToMoveArr(int[][] arr, boolean continueFlag) {
+<span class="fc" id="L59">        Move[] res = new Move[arr.length];</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for(int i = 0; i &lt; arr.length; i++) {</span>
+<span class="fc" id="L61">            int[] dir = arr[i];</span>
+<span class="fc" id="L62">            res[i] = new Move(dir[0], dir[1], continueFlag); </span>
+        }
+<span class="fc" id="L64">        return res;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

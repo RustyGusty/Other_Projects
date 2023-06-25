@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">xxlchess_scaffold</a> &gt; <a href="index.source.html" class="el_package">XXLChess</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">package XXLChess;
+
+//import org.reflections.Reflections;
+//import org.reflections.scanners.Scanners;
+import processing.core.PApplet;
+import processing.core.PImage;
+import processing.data.JSONObject;
+import processing.data.JSONArray;
+import processing.core.PFont;
+import processing.event.MouseEvent;
+import XXLChess.Piece.*;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+
+import javax.management.monitor.GaugeMonitor;
+
+import java.awt.Font;
+import java.io.*;
+import java.util.*;
+
+import XXLChess.Ai;
+
+/**
+ * Control and View: Deals with reading player inputs and displaying the result to the user 
+ */
+public class App extends PApplet {
+
+    public static final int SPRITESIZE = 480;
+    public static final int CELLSIZE = 45;
+    public static final int SIDEBAR = 120;
+    public static final int BOARD_WIDTH = 14;
+
+    public static final int WIDTH = CELLSIZE*BOARD_WIDTH+SIDEBAR;
+    public static final int HEIGHT = BOARD_WIDTH*CELLSIZE;    
+
+    public static double speed;
+    public static double maxMoveTime;
+     
+    
+    Ai ai;
+    boolean playerIsWhite;
+
+    public static final int FPS = 60;
+<span class="pc" id="L45">    PImage[] pieces = new PImage[PieceIndex.size * 2];</span>
+
+    public Board board;
+    public String configPath;
+
+<span class="nc" id="L50">    public App() {</span>
+<span class="nc" id="L51">        this.configPath = &quot;config.json&quot;;</span>
+<span class="nc" id="L52">    }</span>
+
+    /**
+     * For testing purposes, uses a custom config file and initializes
+     * the surface separately from PApplet
+     * @param configPath location of the Json config file
+     */
+<span class="fc" id="L59">    public App(String configPath) {</span>
+<span class="fc" id="L60">        this.configPath = configPath;</span>
+<span class="fc" id="L61">        surface = initSurface();</span>
+<span class="fc" id="L62">        sketchPath();</span>
+<span class="fc" id="L63">        setup();</span>
+<span class="fc" id="L64">        handleDraw();</span>
+<span class="fc" id="L65">        noLoop();</span>
+<span class="fc" id="L66">        ai.disableAi = true;</span>
+<span class="fc" id="L67">    }</span>
+
+    /**
+     * Initialise the setting of the window size.
+    */
+    public void settings() {
+<span class="nc" id="L73">        size(WIDTH, HEIGHT);</span>
+<span class="nc" id="L74">    }</span>
+
+    /**
+     * Load all resources such as images.
+     * Initialise the elements such as the player, enemies and map elements.
+    */    
+    public void setup() {
+<span class="fc" id="L81">        frameRate(FPS);</span>
+
+        // Load images during setup and place them into the pieces array
+        // Black pieces are the first PieceIndex.size elements, 
+        // White pieces are the last PieceIndex.size elements
+<span class="fc" id="L86">        pieces[PieceIndex.ROOK.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-rook.png&quot;);</span>
+<span class="fc" id="L87">        pieces[PieceIndex.KNIGHT.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-knight.png&quot;);</span>
+<span class="fc" id="L88">        pieces[PieceIndex.BISHOP.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-bishop.png&quot;);</span>
+<span class="fc" id="L89">        pieces[PieceIndex.ARCHBISHOP.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-archbishop.png&quot;);</span>
+<span class="fc" id="L90">        pieces[PieceIndex.CAMEL.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-camel.png&quot;);</span>
+<span class="fc" id="L91">        pieces[PieceIndex.GENERAL.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-knight-king.png&quot;);</span>
+<span class="fc" id="L92">        pieces[PieceIndex.AMAZON.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-amazon.png&quot;);</span>
+<span class="fc" id="L93">        pieces[PieceIndex.KING.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-king.png&quot;);</span>
+<span class="fc" id="L94">        pieces[PieceIndex.CHANCELLOR.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-chancellor.png&quot;);</span>
+<span class="fc" id="L95">        pieces[PieceIndex.PAWN.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-pawn.png&quot;);</span>
+<span class="fc" id="L96">        pieces[PieceIndex.QUEEN.ordinal()] = loadImage(&quot;src/main/resources/XXLChess/b-queen.png&quot;);</span>
+<span class="fc" id="L97">        pieces[PieceIndex.PAWN.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-pawn.png&quot;);</span>
+<span class="fc" id="L98">        pieces[PieceIndex.ROOK.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-rook.png&quot;);</span>
+<span class="fc" id="L99">        pieces[PieceIndex.KNIGHT.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-knight.png&quot;);</span>
+<span class="fc" id="L100">        pieces[PieceIndex.BISHOP.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-bishop.png&quot;);</span>
+<span class="fc" id="L101">        pieces[PieceIndex.ARCHBISHOP.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-archbishop.png&quot;);</span>
+<span class="fc" id="L102">        pieces[PieceIndex.CAMEL.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-camel.png&quot;);</span>
+<span class="fc" id="L103">        pieces[PieceIndex.GENERAL.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-knight-king.png&quot;);</span>
+<span class="fc" id="L104">        pieces[PieceIndex.AMAZON.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-amazon.png&quot;);</span>
+<span class="fc" id="L105">        pieces[PieceIndex.KING.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-king.png&quot;);</span>
+<span class="fc" id="L106">        pieces[PieceIndex.CHANCELLOR.ordinal() + PieceIndex.size] = loadImage(&quot;src/main/resources/XXLChess/w-chancellor.png&quot;);</span>
+<span class="fc" id="L107">        pieces[PieceIndex.QUEEN.ordinal() + PieceIndex.size]=loadImage(&quot;src/main/resources/XXLChess/w-queen.png&quot;);</span>
+
+        // load config
+<span class="fc" id="L110">        JSONObject conf = loadJSONObject(new File(this.configPath));</span>
+
+<span class="fc" id="L112">        playerIsWhite = conf.getString(&quot;player_colour&quot;).equals(&quot;white&quot;);</span>
+
+<span class="fc" id="L114">        board = new Board(BOARD_WIDTH, conf.getString(&quot;layout&quot;), true);</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        ai = new Ai(this, !playerIsWhite, board);</span>
+<span class="fc" id="L116">        ai.start();</span>
+<span class="fc" id="L117">        initializeTimers((JSONObject)conf.get(&quot;time_controls&quot;), playerIsWhite);</span>
+
+<span class="fc" id="L119">        speed = conf.getDouble(&quot;piece_movement_speed&quot;);</span>
+<span class="fc" id="L120">        maxMoveTime = conf.getDouble(&quot;max_movement_time&quot;);</span>
+        
+<span class="fc" id="L122">    }</span>
+
+    public ChessTimer whiteTimer;
+    public ChessTimer blackTimer;
+
+    public void initializeTimers(JSONObject config, boolean playerIsWhite){
+<span class="fc" id="L128">        JSONObject playerObj = (JSONObject)config.get(&quot;player&quot;);</span>
+<span class="fc" id="L129">        ChessTimer playerTime = new ChessTimer(TimeUnit.SECONDS.toMillis(playerObj.getLong(&quot;seconds&quot;)), (TimeUnit.SECONDS.toMillis(playerObj.getLong(&quot;increment&quot;))) );</span>
+<span class="fc" id="L130">        JSONObject cpuObj = (JSONObject)config.get(&quot;cpu&quot;);</span>
+<span class="fc" id="L131">        ChessTimer cpuTime = new ChessTimer(TimeUnit.SECONDS.toMillis(cpuObj.getLong(&quot;seconds&quot;)), (TimeUnit.SECONDS.toMillis(cpuObj.getLong(&quot;increment&quot;))) );;</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        whiteTimer = playerIsWhite?playerTime:cpuTime;</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        blackTimer = playerIsWhite?cpuTime:playerTime;</span>
+<span class="fc" id="L134">        whiteTimer.isActive = true;</span>
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * Receive key pressed signal from the keyboard.
+    */
+    public void keyPressed(){
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if (key == 'e') {</span>
+<span class="fc" id="L142">            resign = true;</span>
+<span class="fc" id="L143">            ai.disableAi = true;</span>
+          }
+<span class="fc" id="L145">    }</span>
+    
+<span class="pc" id="L147">    public Location lastOriginLoc = null; // For displaying last move, Location of last origin of movement</span>
+<span class="pc" id="L148">    public Location lastDestLoc = null; // For displaying last move, Location of last destination of movement</span>
+<span class="pc" id="L149">    public boolean pickUp=false; // Used to show if a piece has been selected or not</span>
+<span class="pc" id="L150">    public boolean whiteMove=true; // Used to determine whose move it is</span>
+<span class="pc" id="L151">    public Piece selectedPiece = null; // Refers to the currently selected piece to check for valid movement</span>
+<span class="pc" id="L152">    public boolean gameOver = false; // Returns true when the timer hits 0:00</span>
+<span class="pc" id="L153">    public String middleString = &quot;&quot;;</span>
+
+<span class="pc" id="L155">    public MovementHelper mainMover = new MovementHelper();</span>
+<span class="pc" id="L156">    public MovementHelper auxMover = new MovementHelper(); // For if a castle happens and two pieces move at once</span>
+<span class="pc" id="L157">    public boolean isMoving = false;</span>
+<span class="pc" id="L158">    public boolean resign = false;</span>
+
+
+    /**
+     * Handles all logic relating to when a player presses the mouse. This involves &quot;picking up&quot;
+     * a piece, checking if a move is valid, moving the piece, and reinitializing the valid moves
+     * @param e
+     */
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (gameOver){</span>
+<span class="fc" id="L170">            return;</span>
+        }
+
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (isMoving){</span>
+<span class="fc" id="L174">            return;</span>
+        }
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        if(whiteMove != playerIsWhite)</span>
+<span class="fc" id="L178">            return;</span>
+
+<span class="fc" id="L180">        int x = e.getX();</span>
+<span class="fc" id="L181">        int y = e.getY();</span>
+        
+<span class="fc" id="L183">        int row = (int) Math.floor(y / CELLSIZE);</span>
+<span class="fc" id="L184">        int col = (int) Math.floor(x / CELLSIZE);</span>
+
+<span class="pc bpc" id="L186" title="3 of 8 branches missed.">        if (row &lt; 0 || row &gt;= BOARD_WIDTH || col &lt; 0 || col &gt;= BOARD_WIDTH) {</span>
+<span class="fc" id="L187">            pickUp = false;</span>
+<span class="fc" id="L188">            return; </span>
+        }
+
+<span class="fc" id="L191">        Location targetLocation = new Location(col, row);</span>
+<span class="fc" id="L192">        Piece targetPiece = board.getPiece(row, col);</span>
+
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        if (!pickUp) {</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">            if(targetPiece != null &amp;&amp; whiteMove == targetPiece.isWhite) {</span>
+<span class="fc" id="L196">                selectedPiece = targetPiece;</span>
+<span class="fc" id="L197">                pickUp=true;</span>
+            }
+
+        }
+        else {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">            if(selectedPiece.isValidMove(targetLocation)) {</span>
+<span class="fc" id="L203">                moveAndCalculateSpeed(targetLocation, selectedPiece);</span>
+<span class="fc" id="L204">                pickUp = false;</span>
+
+            }
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">            else if(targetPiece == selectedPiece) {</span>
+<span class="nc" id="L208">                pickUp = false;</span>
+            }
+            // Added a function where if you had a piece picked up, you can pick up
+            // another piece instead of always dropping it
+<span class="pc bpc" id="L212" title="1 of 4 branches missed.">            else if(targetPiece != null &amp;&amp; targetPiece.isWhite == whiteMove) {</span>
+<span class="fc" id="L213">                selectedPiece = targetPiece;</span>
+            }
+            else {
+<span class="fc" id="L216">                pickUp = false;</span>
+            }
+        }
+        
+<span class="fc" id="L220">    }</span>
+
+
+    /**
+     * Makes the move of the selectedPiece to targetLocation, updating all parameters for
+     * drawing accordingly (such as speed, yellow markers, timers, and checking
+     * for end conditions)
+     * @param targetLocation The location the piece should be moved to (should be valid)
+     * @param selectedPiece The piece that is going to be moved
+     */
+    public void moveAndCalculateSpeed(Location targetLocation, Piece selectedPiece) {
+<span class="fc" id="L231">        lastOriginLoc = selectedPiece.location;</span>
+<span class="fc" id="L232">        selectedPiece.makeMove(targetLocation);</span>
+<span class="fc" id="L233">        lastDestLoc = targetLocation;</span>
+
+<span class="fc" id="L235">        mainMover.initialize(lastOriginLoc, lastDestLoc);</span>
+        
+<span class="fc" id="L237">        selectedPiece.hasMoved = true;</span>
+
+        // If this was a castle
+<span class="fc" id="L240">        int distanceX = lastDestLoc.x - lastOriginLoc.x;</span>
+<span class="fc bfc" id="L241" title="All 4 branches covered.">        if(selectedPiece instanceof King &amp;&amp; Math.abs(distanceX) &gt;= 2) {</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">            int sign = distanceX &gt; 0 ? 1 : -1; // Extract just the sign as 1 or -1</span>
+<span class="fc" id="L243">            Location curLoc = new Location(selectedPiece.location.x + sign, selectedPiece.location.y);</span>
+<span class="fc" id="L244">            Move move = new Move(sign, 0, true);</span>
+            // Shift over by sign until we find the piece (should be a rook)
+<span class="fc bfc" id="L246" title="All 2 branches covered.">            while(board.getPiece(curLoc) == null) </span>
+<span class="fc" id="L247">                curLoc.stepForward(move);</span>
+<span class="fc" id="L248">            Piece rook = board.getPiece(curLoc);</span>
+<span class="fc" id="L249">            rook.makeMove(new Location(lastDestLoc.x - sign, lastDestLoc.y));</span>
+<span class="fc" id="L250">            auxMover.initialize(curLoc, rook.location);</span>
+<span class="fc" id="L251">            rook.hasMoved = true;</span>
+        }
+
+<span class="fc" id="L254">        isMoving = true;</span>
+        
+<span class="fc" id="L256">        whiteTimer.incrementTimer();</span>
+<span class="fc" id="L257">        blackTimer.incrementTimer();</span>
+
+<span class="fc bfc" id="L259" title="All 2 branches covered.">        whiteMove = !whiteMove;</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">        if(!board.initializeMoves(whiteMove)){</span>
+<span class="fc" id="L261">            gameOver = true;</span>
+            //if player who's about to move has no valid moves when they still have a king, returns stalemate
+<span class="fc bfc" id="L263" title="All 2 branches covered.">            if(!board.isInCheck(whiteMove)){</span>
+<span class="fc" id="L264">                middleString = (&quot;Stalemate\n –\n draw&quot;);</span>
+            }
+            // If the player was supposed to move there, you lost
+<span class="fc bfc" id="L267" title="All 2 branches covered.">            else if(whiteMove == playerIsWhite){</span>
+<span class="fc" id="L268">                middleString = (&quot;You lost\n by\n checkmate&quot;);</span>
+            }
+            else{
+<span class="fc" id="L271">                middleString = (&quot;You won\n by\n checkmate&quot;);</span>
+            }
+        }
+<span class="fc" id="L274">    }</span>
+
+    /**
+     * formats timer according to chess.com rules
+     * @param timer
+     * @return
+     */
+    public String formatTime(ChessTimer timer){
+<span class="fc" id="L282">        String formatted = &quot;&quot;;</span>
+        
+<span class="fc" id="L284">        long milliseconds = (long) timer.milliseconds;</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        if(milliseconds &lt;= 0){</span>
+<span class="fc" id="L286">            gameOver = true;</span>
+<span class="fc" id="L287">            return &quot;0:00&quot;;</span>
+        }
+<span class="fc" id="L289">        long seconds = milliseconds/1000;</span>
+<span class="fc" id="L290">        long minutes = seconds/60;</span>
+<span class="fc" id="L291">        long hours = minutes/60;</span>
+<span class="fc" id="L292">        minutes %= 60;</span>
+<span class="fc" id="L293">        seconds %= 60;</span>
+<span class="fc" id="L294">        milliseconds %= 1000;</span>
+
+        
+
+<span class="fc bfc" id="L298" title="All 2 branches covered.">        if(hours &gt; 0){</span>
+<span class="fc" id="L299">            formatted = hours + &quot;:&quot;;</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">            if (minutes &lt; 10){</span>
+<span class="fc" id="L301">                formatted += &quot;0&quot;;</span>
+            }
+<span class="fc" id="L303">            formatted += minutes;</span>
+        }
+        else{
+<span class="fc" id="L306">            formatted = minutes + &quot;:&quot;;</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">            if (seconds &lt; 10){</span>
+<span class="fc" id="L308">                formatted += &quot;0&quot;;</span>
+            }
+<span class="fc" id="L310">            formatted += seconds;</span>
+<span class="fc bfc" id="L311" title="All 4 branches covered.">            if (minutes == 0 &amp;&amp; seconds &lt; 20){</span>
+<span class="fc" id="L312">                formatted += &quot;.&quot; + milliseconds/100;</span>
+            }
+        }
+
+<span class="fc" id="L316">        return formatted;</span>
+    }
+
+    public void draw() {
+<span class="fc bfc" id="L320" title="All 2 branches covered.">        if (!gameOver){</span>
+<span class="fc" id="L321">            whiteTimer.decrementTimer();</span>
+<span class="fc" id="L322">            blackTimer.decrementTimer();</span>
+        }
+
+        //chess board
+<span class="fc" id="L326">        background(200); //grey</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">        for (int i = 0; i &lt; BOARD_WIDTH; i++) {</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">            for (int j = 0; j &lt; BOARD_WIDTH; j++) {</span>
+<span class="fc bfc" id="L329" title="All 2 branches covered.">                if ((i + j) % 2 == 0) {</span>
+<span class="fc" id="L330">                    fill(255, 204, 153); //light brown</span>
+                } else {
+<span class="fc" id="L332">                    fill(153, 102, 51); //dark brown</span>
+                }
+<span class="fc" id="L334">                rect(j * CELLSIZE, i * CELLSIZE, CELLSIZE, CELLSIZE);</span>
+            }
+        }
+
+        //chess pieces
+<span class="fc" id="L339">        Piece mainMovingPiece = null;</span>
+<span class="fc" id="L340">        Piece auxMovingPiece = null;</span>
+<span class="fc bfc" id="L341" title="All 2 branches covered.">        for (int i = 0; i &lt; BOARD_WIDTH; i++) {</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">            for (int j = 0; j &lt; BOARD_WIDTH; j++) {</span>
+<span class="fc" id="L343">                Piece targetPiece = board.getPiece(i, j);</span>
+
+<span class="fc bfc" id="L345" title="All 2 branches covered.">                if(targetPiece != null) {</span>
+<span class="fc" id="L346">                    int modifier = 0;</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">                    if(targetPiece.isWhite) modifier = PieceIndex.size;</span>
+<span class="fc bfc" id="L348" title="All 2 branches covered.">                    if(mainMover.isMovedPiece(new Location(j, i)))</span>
+<span class="fc" id="L349">                        mainMovingPiece = targetPiece;</span>
+<span class="fc bfc" id="L350" title="All 2 branches covered.">                    else if(auxMover.isMovedPiece(new Location(j, i)))</span>
+<span class="fc" id="L351">                        auxMovingPiece = targetPiece;</span>
+                    else 
+<span class="fc" id="L353">                        image(pieces[targetPiece.pieceIndex.ordinal() + modifier], j * CELLSIZE, i * CELLSIZE, CELLSIZE, CELLSIZE);</span>
+                }
+            }
+        } 
+
+<span class="fc bfc" id="L358" title="All 2 branches covered.">        if(mainMovingPiece != null){</span>
+<span class="fc bfc" id="L359" title="All 2 branches covered.">            if(mainMover.move()) {</span>
+<span class="pc bpc" id="L360" title="1 of 4 branches missed.">                isMoving = mainMover.isMoving || auxMover.isMoving; //Only update to false if both are not moving</span>
+            }
+<span class="fc" id="L362">            int modifier = 0;</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">            if(mainMovingPiece.isWhite) modifier = PieceIndex.size;</span>
+<span class="fc" id="L364">            image(pieces[mainMovingPiece.pieceIndex.ordinal() + modifier], (float) mainMover.curX, (float) mainMover.curY, CELLSIZE, CELLSIZE);</span>
+        }
+<span class="fc bfc" id="L366" title="All 2 branches covered.">        if(auxMovingPiece != null){</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">            if(auxMover.move()) {</span>
+<span class="pc bpc" id="L368" title="2 of 4 branches missed.">                isMoving = mainMover.isMoving || auxMover.isMoving; //Only update to false if both are not moving</span>
+            }
+<span class="fc" id="L370">            int modifier = 0;</span>
+<span class="pc bpc" id="L371" title="1 of 2 branches missed.">            if(auxMovingPiece.isWhite) modifier = PieceIndex.size;</span>
+<span class="fc" id="L372">            image(pieces[auxMovingPiece.pieceIndex.ordinal() + modifier], (float) auxMover.curX, (float) auxMover.curY, CELLSIZE, CELLSIZE);</span>
+        }
+
+        // Gets the string format of each timer
+<span class="fc" id="L376">        String checkBlack = formatTime(blackTimer);</span>
+<span class="fc" id="L377">        String checkWhite = formatTime(whiteTimer);</span>
+
+        // Prints black and white timer at top and bottom
+<span class="fc" id="L380">        textAlign(RIGHT, TOP);</span>
+<span class="fc" id="L381">        textSize(20);</span>
+<span class="fc" id="L382">        fill(255);</span>
+<span class="fc" id="L383">        text(checkBlack, WIDTH-25, 20);</span>
+<span class="fc" id="L384">        textAlign(RIGHT, BOTTOM);</span>
+<span class="fc" id="L385">        textSize(20);</span>
+<span class="fc" id="L386">        fill(255);</span>
+<span class="fc" id="L387">        text(checkWhite, WIDTH-25, HEIGHT-20);</span>
+
+        // If black timer hits zero, player wins by time
+<span class="fc bfc" id="L390" title="All 2 branches covered.">        if(checkBlack.equals(&quot;0:00&quot;)){</span>
+<span class="fc" id="L391">            gameOver = true;</span>
+<span class="fc" id="L392">            textAlign(RIGHT, CENTER);</span>
+<span class="fc" id="L393">            textSize(20);</span>
+<span class="fc" id="L394">            fill(255);</span>
+<span class="fc" id="L395">            text(&quot;You won\n on time&quot;, WIDTH-25, HEIGHT/2); </span>
+
+        }
+
+        // If white timer hits zero, player wins by time
+<span class="fc bfc" id="L400" title="All 2 branches covered.">        if(checkWhite.equals(&quot;0:00&quot;)){</span>
+<span class="fc" id="L401">            gameOver = true;</span>
+<span class="fc" id="L402">            textAlign(RIGHT, CENTER);</span>
+<span class="fc" id="L403">            textSize(20);</span>
+<span class="fc" id="L404">            fill(255);</span>
+<span class="fc" id="L405">            text(&quot;You lost\n on time&quot;, WIDTH-25, HEIGHT/2); </span>
+        }
+
+
+<span class="fc bfc" id="L409" title="All 2 branches covered.">        if (pickUp == true) {</span>
+<span class="fc" id="L410">            fill(0, 255, 0, 127); // Green</span>
+<span class="fc" id="L411">            rect(selectedPiece.location.x * CELLSIZE, selectedPiece.location.y * CELLSIZE, CELLSIZE, CELLSIZE); // Highlight current selected piece green</span>
+<span class="fc bfc" id="L412" title="All 2 branches covered.">            for (int i = 0; i &lt; BOARD_WIDTH; i++) {</span>
+<span class="fc bfc" id="L413" title="All 2 branches covered.">                for (int j = 0; j &lt; BOARD_WIDTH; j++) {</span>
+<span class="fc bfc" id="L414" title="All 2 branches covered.">                    if (selectedPiece.isValidMove(new Location(i, j))) {</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">                        if (board.getPiece(j, i) == null) {</span>
+<span class="fc" id="L416">                            fill(135, 206, 250, 127); // Blue</span>
+<span class="fc" id="L417">                            rect(i * CELLSIZE, j * CELLSIZE, CELLSIZE, CELLSIZE); // Highlight valid moves blue</span>
+                        } else {
+<span class="fc" id="L419">                            fill(255, 0, 0, 128); // Red</span>
+<span class="fc" id="L420">                            rect(i * CELLSIZE, j * CELLSIZE, CELLSIZE, CELLSIZE); // Highlight captures red</span>
+                        }
+                    }
+                }
+            }
+        }
+
+        //highlight checked king
+<span class="fc bfc" id="L428" title="All 2 branches covered.">        if(board.isInCheck(whiteMove)){</span>
+<span class="fc" id="L429">            King targetKing = board.getKing(whiteMove);</span>
+<span class="fc" id="L430">            fill(128, 0, 0, 128); //dark red</span>
+<span class="fc" id="L431">            rect(targetKing.location.x * CELLSIZE, targetKing.location.y * CELLSIZE, CELLSIZE, CELLSIZE);</span>
+<span class="fc" id="L432">            textAlign(RIGHT, CENTER);</span>
+<span class="fc" id="L433">            textSize(20);</span>
+<span class="fc" id="L434">            fill(255);</span>
+<span class="pc bpc" id="L435" title="1 of 2 branches missed.">            if(!gameOver)</span>
+<span class="nc" id="L436">                text(&quot;Check!&quot;, WIDTH-25, HEIGHT/2); </span>
+        }
+
+<span class="fc" id="L439">        fill(255, 255, 0, 127); //yellow</span>
+        //highlight old move yellow
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">        if(lastOriginLoc != null){</span>
+<span class="fc" id="L442">            rect(lastOriginLoc.x * CELLSIZE, lastOriginLoc.y * CELLSIZE, CELLSIZE, CELLSIZE);</span>
+<span class="fc" id="L443">            rect(lastDestLoc.x * CELLSIZE, lastDestLoc.y * CELLSIZE, CELLSIZE, CELLSIZE);</span>
+        }
+
+<span class="fc" id="L446">        textAlign(RIGHT, CENTER);</span>
+<span class="fc" id="L447">        textSize(20);</span>
+<span class="fc" id="L448">        fill(255);</span>
+<span class="fc" id="L449">        text(middleString, WIDTH-25, HEIGHT/2);</span>
+
+<span class="fc bfc" id="L451" title="All 2 branches covered.">        if (resign){</span>
+<span class="fc" id="L452">            gameOver = true;</span>
+<span class="fc" id="L453">            textAlign(RIGHT, CENTER);</span>
+<span class="fc" id="L454">            textSize(20);</span>
+<span class="fc" id="L455">            fill(255);</span>
+<span class="fc" id="L456">            text(&quot;You chose\n to\n resign&quot;, WIDTH-25, HEIGHT/2); </span>
+        }
+
+<span class="fc" id="L459">    }</span>
+    
+    public static void main(String[] args) {
+<span class="nc" id="L462">        PApplet.main(&quot;XXLChess.App&quot;);</span>
+<span class="nc" id="L463">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

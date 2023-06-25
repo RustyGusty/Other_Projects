@@ -1,0 +1,1 @@
+All folders have README descriptions since these are non-school related to explain what each one does

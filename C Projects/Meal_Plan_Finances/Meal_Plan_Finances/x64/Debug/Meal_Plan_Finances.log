@@ -1,0 +1,3 @@
+﻿  Meal_Plan_Finances.cpp
+C:\Users\llnak\source\ESC190\Meal_Plan_Finances\Meal_Plan_Finances\Meal_Plan_Finances.cpp(30,21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Meal_Plan_Finances.vcxproj -> C:\Users\llnak\source\ESC190\Meal_Plan_Finances\x64\Debug\Meal_Plan_Finances.exe

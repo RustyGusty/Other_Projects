@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PieceIndex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">xxlchess_scaffold</a> &gt; <a href="index.source.html" class="el_package">XXLChess.Piece</a> &gt; <span class="el_source">PieceIndex.java</span></div><h1>PieceIndex.java</h1><pre class="source lang-java linenums">package XXLChess.Piece;
+
+/**
+ * Allows using names of pieces instead of numbered indices to be clearer and easier to code in
+ */
+<span class="fc" id="L6">public enum PieceIndex{</span>
+<span class="fc" id="L7">    PAWN,</span>
+<span class="fc" id="L8">    KNIGHT,</span>
+<span class="fc" id="L9">    CAMEL,</span>
+<span class="fc" id="L10">    BISHOP,</span>
+<span class="fc" id="L11">    GENERAL,</span>
+<span class="fc" id="L12">    ROOK,</span>
+<span class="fc" id="L13">    ARCHBISHOP,</span>
+<span class="fc" id="L14">    CHANCELLOR,</span>
+<span class="fc" id="L15">    QUEEN,</span>
+<span class="fc" id="L16">    AMAZON,</span>
+<span class="fc" id="L17">    KING;</span>
+
+    /**
+     * How many pieces are available, used to make the image array
+     */
+    public static final int size;
+    static{
+<span class="fc" id="L24">        size = values().length;</span>
+<span class="fc" id="L25">    }</span>
+
+    /**
+     * Given a letter ch, returns the associated PieceIndex with that piece ignoring capitalization
+     * (PAWN for p, QUEEN for q, CHANCELLOR for e, etc.)
+     * @param ch - a char holding the letter to be checked against
+     * @return null if ch is not a valid letter, the corresponding PieceIndex enum value otherwise
+     */
+    public static PieceIndex letterToIndex(char ch){
+<span class="fc" id="L34">        ch = Character.toLowerCase(ch);</span>
+<span class="pc bpc" id="L35" title="1 of 12 branches missed.">        switch(ch){</span>
+            case 'p':
+<span class="fc" id="L37">                return PAWN;</span>
+            case 'n':
+<span class="fc" id="L39">                return KNIGHT;</span>
+            case 'c':
+<span class="fc" id="L41">                return CAMEL;</span>
+            case 'b':
+<span class="fc" id="L43">                return BISHOP;</span>
+            case 'g':
+<span class="fc" id="L45">                return GENERAL;</span>
+            case 'r':
+<span class="fc" id="L47">                return ROOK;</span>
+            case 'h':
+<span class="fc" id="L49">                return ARCHBISHOP;</span>
+            case 'e':
+<span class="fc" id="L51">                return CHANCELLOR;</span>
+            case 'q':
+<span class="fc" id="L53">                return QUEEN;</span>
+            case 'a':
+<span class="fc" id="L55">                return AMAZON;</span>
+            case 'k':
+<span class="fc" id="L57">                return KING;</span>
+            default:
+<span class="nc" id="L59">                return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

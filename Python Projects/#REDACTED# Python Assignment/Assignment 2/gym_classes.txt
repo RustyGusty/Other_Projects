@@ -1,0 +1,10 @@
+1 Pilates Reformer
+2 Yoga Yin
+3 Body pump
+4 HIIT
+5 Body attack
+6 Bootcamp
+7 Mind reset
+8 Zumba
+9 Mat Pilates
+10 Cardio

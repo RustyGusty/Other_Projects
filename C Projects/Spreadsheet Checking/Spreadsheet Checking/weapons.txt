@@ -1,0 +1,51 @@
+Basic Laser
+Dual Lasers
+Burst Laser I
+Burst Laser II
+Burst Laser III
+Heavy Laser I
+Heavy Pierce I
+Heavy Laser II
+Hull Laser I
+Hull Laser II
+Chain Laser
+Chain Vulcan
+Charge Laser 1+
+Charge Laser I
+Charge Laser II
+Adv. Flak
+Flak I
+Flak II
+Leto Missile
+Artemis Missile
+Hermes Missile
+Breach Missile
+Hull Missile
+Swarm Missiles
+Pegasus Missile
+Small Bomb
+Breach Bomb I
+Breach Bomb II
+Fire Bomb
+Ion Bomb
+Stun Bomb
+Healing Burst
+Repair Burst
+Crystal Lockdown Bomb
+Ion Blast I
+Heavy Ion
+Ion Blast II
+Charge Ion
+Ion Stun
+Chain Ion
+Mini Beam
+Pike Beam
+Halberd Beam
+Fire Beam
+Hull Beam
+Glaive Beam
+Anti-Bio Beam
+Burst Crystal I
+Burst Crystal II
+Heavy Crystal I
+Heavy Crystal II

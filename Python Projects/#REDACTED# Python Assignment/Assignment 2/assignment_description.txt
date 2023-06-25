@@ -1,0 +1,162 @@
+In line with the theme of your Assignment 1, this question is about writing a program for a gym. Your program will focus on a list of gym classes for each gym trainer and the trainer's schedule. There are a number of trainers working in the gym and each one of them is teaching a number of classes. All the information about the gym classes and trainers is saved in three text files. We want you to write a program that produces a menu for the user, and based on what the user chooses from the menu, the program reads the content of the text files and produces desired output for the user.
+
+The three text files in this program are gym_classes.txt, gym_trainer.txt and gym_schedule.txt :
+
+gym_classes.txt : contains gym class IDs and class names; Example: 1 Pilates Reformer (1 is class ID and Pilates Reformer is the class name)
+
+gym_trainer.txt : contains the trainer names and their hourly rate; Example: 15 Rita Hoggins (trainer name: Rita Hoggins, hourly rate: $15 per hour)
+
+gym_schedule.txt : contains a map for the trainer names and the gym classes they are teaching.  Trainers' names are saved in gym_trainer.txt  and gym classes' names and IDs are saved in gym_classes.txt . In gym_schedule.txt each line has the schedule of one trainer (the first line is the schedule of the first trainer in gym_trainer.txt), and shows which classes in gym_classes.txt the trainer is teaching. The schedule is in the format of 1s and 0s,  which shows a list of mapping between trainers and their classes, value 1 shows the trainer teaches that class, and value 0 shows the trainer does not teach the class. For example, the first line in gym_schedule.txt is 0010010101 , this translates to the first trainer who is Rita Hoggins is teaching the following four classes: 3 (Body pump), 6 (Bootcamp), 8 (Zumba), and 10 (Cardio). 
+
+This is the full list of the schedules, by combining the three above files to show the map between trainers and the classes they are teaching: 
+
+                1       2       3       4       5       6       7       8       9       10
+Rita Hoggins    0       0       1       0       0       1       0       1       0       1
+Amelia Grosh    0       1       0       0       1       1       1       1       0       1
+Helen Brundy    1       1       1       0       0       0       1       1       0       0
+Samuel Yeets    0       0       0       0       0       0       0       0       0       0
+Daniel Adams    0       1       1       0       1       1       0       1       0       0
+Olive Greene    1       0       1       0       1       0       0       0       0       1
+
+Program Features
+The program is a menu-driven application that displays the activities that can be performed by a user. A user chooses an option by entering the choice as a number. The project covers the following menus:
+
+Display the name of a gym class when the user enters a class ID
+
+Display the ID of a class when a user enters the class name
+
+Display gym trainer(s) name who is running a class with the given class ID
+
+Display the list of all gym classes that a trainer is running
+
+Display the name of trainers who are teaching a given number of classes
+
+Display the trainer's wage 
+
+Display all gym classes' names and their IDs
+
+Display all details stored in the three text files in a tabular format, this shows which trainers are teaching which classes. 
+
+There will be error messages displayed if the user enters a wrong class ID, wrong trainer name, or wrong class name. 
+
+The format of the menu that the user receives at the start of the program is:
+
+___________________________________________________________ 
+Menu 
+___________________________________________________________ 
+1. Display the gym class name by its class ID
+2. Display class ID by class name
+3. Display which gym trainer(s) is running a class with a given class ID
+4. Display gym classes that a trainer is running
+5. Display trainer(s) name who is running a given number of classes
+6. Display the trainer's salary
+7. Display all classes with IDs
+8. Display the details of all gym schedules and gym trainers
+9. Exit the program
+enter your choice --->
+
+If the user chooses 1: the program asks the user to enter a class ID and returns the name of that class: 
+
+enter your choice ---> 1
+Enter a class ID ---> 1
+Pilates Reformer 
+If the user chooses 2: the program asks the user to enter a class name and returns the class ID:
+
+enter your choice ---> 2
+Enter a class name ---> HIIT
+4
+If the user chooses 3: the program asks the user to enter a class ID and returns the name of the trainers who are teaching that class: 
+
+enter your choice ---> 3
+Enter Class ID ---> 5
+Helen Brundy,Olive Greene
+If the user chooses 4: the program asks the user to enter a trainer name and returns a list of classes that trainer is teaching:
+
+enter your choice ---> 4
+Enter Trainer Name ---> Helen Brundy
+Pilates Reformer,Yoga Yin,Body pump,Mind reset,Zumba
+If the user chooses 5: the program asks the user to enter a count of classes, then search through the list of trainers and their classes, to return which trainers are teaching that given number of classes. 
+
+enter your choice ---> 5
+Enter count of classes ---> 4
+Rita Hoggins,Olive Greene
+If the user chooses 6: the program asks the user to enter the trainer's name to give their salary. Salary is based on the trainer's hourly wage multiplied by the number of classes they are teaching in gym_schedule.txt. For example, Amelia Grosh schedule in gym_schedule is 0100111101, which means she is teaching 6 classes, and her hourly rate in gym_trainer.txt is $20 per hour (We are assuming each trainer teaches each class only once, and each class is running for an hour), so her salary is: 6 * $20 = $120
+
+enter your choice ---> 6
+Enter Trainer Name ---> Amelia Grosh
+Salary for this trainer is $120
+If the user chooses 7: the program displays all classes' names and their class IDs
+
+enter your choice ---> 7 
+1 Pilates Reformer
+2 Yoga Yin
+3 Body pump
+4 HIIT
+5 Body attack
+6 Bootcamp
+7 Mind reset
+8 Zumba
+9 Mat Pilates
+10 Cardio
+
+If the user chooses 8: the program displays the schedule of each trainer with their class IDs, in a format of a table below. If they are teaching that class they get Y and if they are not teaching that class they get N:
+
+enter your choice ---> 8
+                1       2       3       4       5       6       7       8       9       10    
+Rita Hoggins    N       N       Y       N       N       Y       N       Y       N       Y
+Amelia Grosh    N       Y       N       N       Y       Y       Y       Y       N       Y
+Helen Brundy    Y       Y       Y       N       N       N       Y       Y       N       N
+Samuel Yeets    N       N       N       N       N       N       N       N       N       N
+Daniel Adams    N       Y       Y       N       Y       Y       N       Y       N       N
+Olive Greene    Y       N       Y       N       Y       N       N       N       N       Y
+
+The space between different parts of each line above is tab character \t, not space character. 
+
+The first line to show class IDs starts with 3 tab characters \t\t\t .
+
+If the user chooses 9: terminate the program:
+
+enter your choice ---> 9
+Thank you for using our program. Bye!
+
+Error Handling 
+When the user enters a wrong class ID  (in menu options 1 and 3) the program returns this error:
+
+enter your choice ---> 1
+Enter a class ID ---> 78
+Class ID does not exist
+When the user enters a wrong class name the program returns this error: 
+
+enter your choice ---> 2
+Enter a class name ---> Dance
+Class name does not exist
+In menu 3, when there is no one teaching a class, the program shows this message: 
+
+enter your choice ---> 3
+Enter Class ID ---> 4
+No one is teaching this class
+When no trainer with that name exists (in menu options 4 and 6), the program gives this error: 
+
+enter your choice ---> 4
+Enter Trainer Name ---> Adam Smith
+No trainer with this name exists
+If there are no classes assigned to a trainer (in menu options 4 and 6), this error message appears: 
+
+enter your choice ---> 4
+Enter Trainer Name ---> Samuel Yeets
+No class is assigned to this trainer
+When there is no trainer with that number of classes exists:  
+
+enter your choice ---> 5
+Enter count of classes ---> 2
+Data Not Available
+If the user enters a wrong choice of menu:
+
+enter your choice ---> 10
+Wrong choice, please enter again
+Or
+
+enter your choice ---> hello
+Wrong choice, please enter again
+Testing your Code
+There are public and private test cases available, and during marking your code will be evaluated with both of them. You are responsible for testing your code thoroughly, passing all public test cases does not mean your program will pass all private test cases too. 
